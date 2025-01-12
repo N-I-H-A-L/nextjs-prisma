@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db";
+import { GetServerSidePropsContext } from "next";
 import { unstable_cache as cache } from "next/cache";
 
 const getCachedPost = cache((slug) => {
@@ -9,12 +10,8 @@ const getCachedPost = cache((slug) => {
   });
 });
 
-export default async function PostPage({ params } : {
-  params: {
-    slug: string;
-  }
-}) {
-  const post = await getCachedPost(params.slug);
+export default async function PostPage({ params } : GetServerSidePropsContext ) {
+  const post = await getCachedPost(params?.slug as string);
 
   return (
     <main className="flex flex-col items-center gap-y-5 pt-24 text-center">
